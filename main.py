@@ -136,12 +136,12 @@ class PhysicalModel:
         self.A_ar = self.canvas_conversion(a_b_dot2_r, self.a_scale)
         self.A_at = self.canvas_conversion(a_b_dot2_t, self.a_scale)
 
-        # self.abs_acc_b = self.create_arrow(self.B, self.B, 'red', self.arrow_size)
-        # self.abs_vel_b = self.create_arrow(self.B, self.B, 'green', self.arrow_size)
-        # self.abs_acc_a = self.create_arrow(self.A, self.A, 'red', self.arrow_size)
+        self.abs_acc_b = self.create_arrow(self.B, self.B, 'red', self.arrow_size)
+        self.abs_vel_b = self.create_arrow(self.B, self.B, 'green', self.arrow_size)
+        self.abs_acc_a = self.create_arrow(self.A, self.A, 'red', self.arrow_size)
         self.r_acc_a = self.create_arrow(self.A, self.A, 'orange', self.arrow_size_r)
         self.t_acc_a = self.create_arrow(self.A, self.A, 'orange', self.arrow_size_r)
-        # self.abs_vel_a = self.create_arrow(self.A, self.A, 'green', self.arrow_size)
+        self.abs_vel_a = self.create_arrow(self.A, self.A, 'green', self.arrow_size)
         self.r_vel_a = self.create_arrow(self.A, self.A, 'cyan', self.arrow_size_r)
 
         self.point_radius = 10
@@ -228,11 +228,11 @@ class PhysicalModel:
         self.set_coords(self.A, self.joint_a, self.joint_radius)
         self.set_coords(self.B, self.joint_b, self.joint_radius)
 
-        # self.move_arrow(self.abs_vel_b, self.B, vector_addition(self.B, self.B_v))
-        # self.move_arrow(self.abs_acc_b, self.B, vector_addition(self.B, self.B_a))
-        # self.move_arrow(self.abs_vel_a, self.A, vector_addition(self.A, self.A_v))
+        self.move_arrow(self.abs_vel_b, self.B, vector_addition(self.B, self.B_v))
+        self.move_arrow(self.abs_acc_b, self.B, vector_addition(self.B, self.B_a))
+        self.move_arrow(self.abs_vel_a, self.A, vector_addition(self.A, self.A_v))
         self.move_arrow(self.r_vel_a, self.A, vector_addition(self.A, self.A_vr))
-        # self.move_arrow(self.abs_acc_a, self.A, vector_addition(self.A, self.A_a))
+        self.move_arrow(self.abs_acc_a, self.A, vector_addition(self.A, self.A_a))
         self.move_arrow(self.r_acc_a, self.A, vector_addition(self.A, self.A_ar))
         self.move_arrow(self.t_acc_a, self.A, vector_addition(self.A, self.A_at))
 
