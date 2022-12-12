@@ -211,7 +211,7 @@ class PhysicalModel:
     def create_point_label(self, name, point):
         x = point[0] - self.label_d
         y = point[1] - self.label_d
-        return self.canvas.create_text(x, y, text=name, font=("Purisa", 24))
+        return self.canvas.create_text(x, y, text=name, font=("Arial", 24))
 
     def set_coords(self, point, point_object, radius):
         x1 = point[0] - radius
@@ -345,7 +345,7 @@ class VelocityDiagram:
     def create_point_label(self, name, point):
         x = point[0] - self.label_d
         y = point[1] - self.label_d
-        return self.canvas.create_text(x, y, text=name, font=("Purisa", 12))
+        return self.canvas.create_text(x, y, text=name, font=("Arial", 12))
 
     def movement(self):
 
@@ -444,7 +444,7 @@ class AccelerationDiagram:
     def create_point_label(self, name, point):
         x = point[0] - self.label_d
         y = point[1] - self.label_d
-        return self.canvas.create_text(x, y, text=name, font=("Purisa", 12))
+        return self.canvas.create_text(x, y, text=name, font=("Arial", 12))
 
     def movement(self):
 
