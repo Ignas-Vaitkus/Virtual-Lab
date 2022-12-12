@@ -25,25 +25,26 @@ a_b_dot2_t = [0.0, 0.0]
 
 def vector_calculations():
 
-    sinphi = m.sin(phi)
-    cosphi = m.cos(phi)
-    denominator = l * l - r * r * cosphi * cosphi
-    invdenominator = 1 / denominator
-    sqrtdenominator = m.sqrt(denominator)
-    invsqrtdenominator = 1 / sqrtdenominator
+    sinPhi = m.sin(phi)
+    cosPhi = m.cos(phi)
+    denominator = l * l - r * r * cosPhi * cosPhi
+    invDenominator = 1 / denominator
+    sqrtDenominator = m.sqrt(denominator)
+    invSqrtDenominator = 1 / sqrtDenominator
 
     global b, a, b_dot, b_dot2, a_dot, a_dot2, a_b_dot, a_b_dot2_r, a_b_dot2_t
 
-    b = [-r * sinphi, r * cosphi]
-    a = [-r * sinphi - sqrtdenominator, 0]
+    b = [-r * sinPhi, r * cosPhi]
+    a = [-r * sinPhi - sqrtDenominator, 0]
 
-    b_dot = [-r * cosphi * ang_vel, -r * sinphi * ang_vel]
-    b_dot2 = [r * sinphi * ang_vel * ang_vel, -r * cosphi * ang_vel * ang_vel]
+    b_dot = [-r * cosPhi * ang_vel, -r * sinPhi * ang_vel]
+    b_dot2 = [r * sinPhi * ang_vel * ang_vel, -r * cosPhi * ang_vel * ang_vel]
 
-    a_dot_x = - ang_vel * r * r * sinphi * cosphi * invsqrtdenominator - ang_vel * r * cosphi
-    a_dot2_x = ang_vel * ang_vel * r * r * invsqrtdenominator * (
-            sinphi * sinphi - cosphi * cosphi + r * r * sinphi * sinphi * cosphi * cosphi * invdenominator)\
-            + ang_vel * ang_vel * r * sinphi
+    a_dot_x = - ang_vel * r * r * sinPhi * cosPhi * \
+        invSqrtDenominator - ang_vel * r * cosPhi
+    a_dot2_x = ang_vel * ang_vel * r * r * invSqrtDenominator * (
+        sinPhi * sinPhi - cosPhi * cosPhi + r * r * sinPhi * sinPhi * cosPhi * cosPhi * invDenominator)\
+        + ang_vel * ang_vel * r * sinPhi
 
     a_dot = [a_dot_x, 0]
     a_dot2 = [a_dot2_x, 0]
@@ -57,12 +58,14 @@ def vector_calculations():
     inv_l = 1 / l
     mag_a_b_dot2_r = mag_a_b_dot * inv_l
 
-    a_b_dot2_r = [- mag_a_b_dot2_r * inv_l * a_b[0], - mag_a_b_dot2_r * inv_l * a_b[1]]
+    a_b_dot2_r = [- mag_a_b_dot2_r * inv_l *
+                  a_b[0], - mag_a_b_dot2_r * inv_l * a_b[1]]
     a_b_dot2_t = [a_b_dot2[0] - a_b_dot2_r[0], a_b_dot2[1] - a_b_dot2_r[1]]
 
 
 def vector_addition(x, y):
     return [x[0] + y[0], x[1] - y[1]]
+
 
 def scalar_multiplication(x, m):
     return [i * m for i in x]
@@ -101,7 +104,8 @@ class PhysicalModel:
         self.piston_height = 80
 
         self.piston = self.canvas.create_rectangle(self.A[0] - self.piston_length, self.A[1] + self.piston_height,
-                                                   self.A[0] + self.piston_length, self.A[1] - self.piston_height,
+                                                   self.A[0] + self.piston_length, self.A[1] -
+                                                   self.piston_height,
                                                    fill='LightBlue3', width=2)
 
         self.beam_width = 60
@@ -123,8 +127,10 @@ class PhysicalModel:
 
         self.arrow_radius = 150
 
-        self.v_scale = self.arrow_radius / m.sqrt(b_dot[0]*b_dot[0] + b_dot[1]*b_dot[1])
-        self.a_scale = self.arrow_radius / m.sqrt(b_dot2[0]*b_dot2[0] + b_dot2[1]*b_dot2[1])
+        self.v_scale = self.arrow_radius / \
+            m.sqrt(b_dot[0]*b_dot[0] + b_dot[1]*b_dot[1])
+        self.a_scale = self.arrow_radius / \
+            m.sqrt(b_dot2[0]*b_dot2[0] + b_dot2[1]*b_dot2[1])
 
         self.A = self.canvas_conversion(a, self.position_scale)
         self.B = self.canvas_conversion(b, self.position_scale)
@@ -136,13 +142,20 @@ class PhysicalModel:
         self.A_ar = self.canvas_conversion(a_b_dot2_r, self.a_scale)
         self.A_at = self.canvas_conversion(a_b_dot2_t, self.a_scale)
 
-        self.abs_acc_b = self.create_arrow(self.B, self.B, 'red', self.arrow_size)
-        self.abs_vel_b = self.create_arrow(self.B, self.B, 'green', self.arrow_size)
-        self.abs_acc_a = self.create_arrow(self.A, self.A, 'red', self.arrow_size)
-        self.r_acc_a = self.create_arrow(self.A, self.A, 'orange', self.arrow_size_r)
-        self.t_acc_a = self.create_arrow(self.A, self.A, 'orange', self.arrow_size_r)
-        self.abs_vel_a = self.create_arrow(self.A, self.A, 'green', self.arrow_size)
-        self.r_vel_a = self.create_arrow(self.A, self.A, 'cyan', self.arrow_size_r)
+        self.abs_acc_b = self.create_arrow(
+            self.B, self.B, 'red', self.arrow_size)
+        self.abs_vel_b = self.create_arrow(
+            self.B, self.B, 'green', self.arrow_size)
+        self.abs_acc_a = self.create_arrow(
+            self.A, self.A, 'red', self.arrow_size)
+        self.r_acc_a = self.create_arrow(
+            self.A, self.A, 'orange', self.arrow_size_r)
+        self.t_acc_a = self.create_arrow(
+            self.A, self.A, 'orange', self.arrow_size_r)
+        self.abs_vel_a = self.create_arrow(
+            self.A, self.A, 'green', self.arrow_size)
+        self.r_vel_a = self.create_arrow(
+            self.A, self.A, 'cyan', self.arrow_size_r)
 
         self.point_radius = 10
 
@@ -178,7 +191,8 @@ class PhysicalModel:
 
     def create_joint(self, point):
         return self.canvas.create_oval(point[0] - self.joint_radius, point[1] + self.joint_radius,
-                                       point[0] + self.joint_radius, point[1] - self.joint_radius,
+                                       point[0] + self.joint_radius, point[1] -
+                                       self.joint_radius,
                                        fill='LightBlue2', width=self.joint_border)
 
     def create_arrow(self, start, end, color, size):
@@ -190,7 +204,8 @@ class PhysicalModel:
 
     def create_point(self, point):
         return self.canvas.create_oval(point[0] - self.point_radius, point[1] + self.point_radius,
-                                       point[0] + self.point_radius, point[1] - self.point_radius,
+                                       point[0] + self.point_radius, point[1] -
+                                       self.point_radius,
                                        fill='black')
 
     def create_point_label(self, name, point):
@@ -219,29 +234,40 @@ class PhysicalModel:
         self.A_ar = scalar_multiplication(a_b_dot2_r, self.a_scale)
         self.A_at = scalar_multiplication(a_b_dot2_t, self.a_scale)
 
-
         self.canvas.coords(self.piston, self.A[0] - self.piston_length, self.A[1] + self.piston_height,
                            self.A[0] + self.piston_length, self.A[1] - self.piston_height)
-        self.canvas.coords(self.beam_OB, self.O[0], self.O[1], self.B[0], self.B[1])
-        self.canvas.coords(self.beam_AB, self.A[0], self.A[1], self.B[0], self.B[1])
+        self.canvas.coords(
+            self.beam_OB, self.O[0], self.O[1], self.B[0], self.B[1])
+        self.canvas.coords(
+            self.beam_AB, self.A[0], self.A[1], self.B[0], self.B[1])
         self.set_coords(self.O, self.joint_o, self.joint_radius)
         self.set_coords(self.A, self.joint_a, self.joint_radius)
         self.set_coords(self.B, self.joint_b, self.joint_radius)
 
-        self.move_arrow(self.abs_vel_b, self.B, vector_addition(self.B, self.B_v))
-        self.move_arrow(self.abs_acc_b, self.B, vector_addition(self.B, self.B_a))
-        self.move_arrow(self.abs_vel_a, self.A, vector_addition(self.A, self.A_v))
-        self.move_arrow(self.r_vel_a, self.A, vector_addition(self.A, self.A_vr))
-        self.move_arrow(self.abs_acc_a, self.A, vector_addition(self.A, self.A_a))
-        self.move_arrow(self.r_acc_a, self.A, vector_addition(self.A, self.A_ar))
-        self.move_arrow(self.t_acc_a, self.A, vector_addition(self.A, self.A_at))
+        self.move_arrow(self.abs_vel_b, self.B,
+                        vector_addition(self.B, self.B_v))
+        self.move_arrow(self.abs_acc_b, self.B,
+                        vector_addition(self.B, self.B_a))
+        self.move_arrow(self.abs_vel_a, self.A,
+                        vector_addition(self.A, self.A_v))
+        self.move_arrow(self.r_vel_a, self.A,
+                        vector_addition(self.A, self.A_vr))
+        self.move_arrow(self.abs_acc_a, self.A,
+                        vector_addition(self.A, self.A_a))
+        self.move_arrow(self.r_acc_a, self.A,
+                        vector_addition(self.A, self.A_ar))
+        self.move_arrow(self.t_acc_a, self.A,
+                        vector_addition(self.A, self.A_at))
 
         self.set_coords(self.O, self.point_o, self.point_radius)
         self.set_coords(self.A, self.point_a, self.point_radius)
         self.set_coords(self.B, self.point_b, self.point_radius)
-        self.canvas.coords(self.point_label_o, self.O[0] - self.label_d, self.O[1] - self.label_d)
-        self.canvas.coords(self.point_label_a, self.A[0] - self.label_d, self.A[1] - self.label_d)
-        self.canvas.coords(self.point_label_b, self.B[0] - self.label_d, self.B[1] - self.label_d)
+        self.canvas.coords(self.point_label_o,
+                           self.O[0] - self.label_d, self.O[1] - self.label_d)
+        self.canvas.coords(self.point_label_a,
+                           self.A[0] - self.label_d, self.A[1] - self.label_d)
+        self.canvas.coords(self.point_label_b,
+                           self.B[0] - self.label_d, self.B[1] - self.label_d)
 
         self.canvas.after(tick, self.movement)
 
@@ -332,9 +358,12 @@ class VelocityDiagram:
         self.move_arrow(self.B_arrow, self.O, self.B)
         self.move_arrow(self.AB_arrow, self.B, self.A)
 
-        self.canvas.coords(self.O_label, self.O[0] - self.label_d, self.O[1] - self.label_d)
-        self.canvas.coords(self.A_label, self.A[0] - self.label_d, self.A[1] - self.label_d)
-        self.canvas.coords(self.B_label, self.B[0] - self.label_d, self.B[1] - self.label_d)
+        self.canvas.coords(
+            self.O_label, self.O[0] - self.label_d, self.O[1] - self.label_d)
+        self.canvas.coords(
+            self.A_label, self.A[0] - self.label_d, self.A[1] - self.label_d)
+        self.canvas.coords(
+            self.B_label, self.B[0] - self.label_d, self.B[1] - self.label_d)
 
         self.canvas.after(tick, self.movement)
 
@@ -367,8 +396,10 @@ class AccelerationDiagram:
 
         self.A_arrow = self.create_arrow(self.O, self.A, 'red', self.size)
         self.B_arrow = self.create_arrow(self.O, self.B, 'red', self.size)
-        self.AB_r_arrow = self.create_arrow(self.B, self.AB_r, 'orange', self.size)
-        self.AB_t_arrow = self.create_arrow(self.AB_r, self.A, 'orange', self.size)
+        self.AB_r_arrow = self.create_arrow(
+            self.B, self.AB_r, 'orange', self.size)
+        self.AB_t_arrow = self.create_arrow(
+            self.AB_r, self.A, 'orange', self.size)
 
         self.label_d = 16
 
@@ -383,11 +414,13 @@ class AccelerationDiagram:
                                        arrowshape=(size[1], size[2], size[3]))
 
     def scale_vectors(self):
-        x = [0] + [a_dot2[0]] + [b_dot2[0] + a_b_dot2_r[0]] + [b_dot2[0]]  # + [a_b_dot[0]]
+        x = [0] + [a_dot2[0]] + [b_dot2[0] + a_b_dot2_r[0]] + \
+            [b_dot2[0]]  # + [a_b_dot[0]]
         min_x = min(x)
         delta_x = max(x) - min_x
 
-        y = [0] + [a_dot2[1]] + [b_dot2[1] + a_b_dot2_r[1]] + [b_dot2[1]]  # + [a_b_dot[1]
+        y = [0] + [a_dot2[1]] + [b_dot2[1] +
+                                 a_b_dot2_r[1]] + [b_dot2[1]]  # + [a_b_dot[1]
         max_y = max(y)
         delta_y = max_y - min(y)
 
@@ -419,16 +452,20 @@ class AccelerationDiagram:
         self.O = self.canvas_conversion([0, 0])
         self.A = self.canvas_conversion(a_dot2)
         self.B = self.canvas_conversion(b_dot2)
-        self.AB_r = self.canvas_conversion([b_dot2[0] + a_b_dot2_r[0], b_dot2[1] + a_b_dot2_r[1]])
+        self.AB_r = self.canvas_conversion(
+            [b_dot2[0] + a_b_dot2_r[0], b_dot2[1] + a_b_dot2_r[1]])
 
         self.move_arrow(self.A_arrow, self.O, self.A)
         self.move_arrow(self.B_arrow, self.O, self.B)
         self.move_arrow(self.AB_r_arrow, self.B, self.AB_r)
         self.move_arrow(self.AB_t_arrow, self.AB_r, self.A)
 
-        self.canvas.coords(self.O_label, self.O[0] - self.label_d, self.O[1] - self.label_d)
-        self.canvas.coords(self.A_label, self.A[0] - self.label_d, self.A[1] - self.label_d)
-        self.canvas.coords(self.B_label, self.B[0] - self.label_d, self.B[1] - self.label_d)
+        self.canvas.coords(
+            self.O_label, self.O[0] - self.label_d, self.O[1] - self.label_d)
+        self.canvas.coords(
+            self.A_label, self.A[0] - self.label_d, self.A[1] - self.label_d)
+        self.canvas.coords(
+            self.B_label, self.B[0] - self.label_d, self.B[1] - self.label_d)
 
         self.canvas.after(tick, self.movement)
 
@@ -456,10 +493,12 @@ class Timer:
         self.button_frame = tk.Frame(self.frame)
         self.button_frame.pack()
 
-        self.StartButton = tk.Button(self.button_frame, text='Start', command=self.toggle)
+        self.StartButton = tk.Button(
+            self.button_frame, text='Start', command=self.toggle)
         self.StartButton.pack(side=tk.LEFT)
 
-        self.ResetButton = tk.Button(self.button_frame, text='Reset', command=self.reset)
+        self.ResetButton = tk.Button(
+            self.button_frame, text='Reset', command=self.reset)
         self.ResetButton.pack(side=tk.RIGHT)
 
         self.SpeedSlider = tk.Scale(self.frame, from_=0.1, to=1, resolution=0.1, orient=tk.HORIZONTAL,
