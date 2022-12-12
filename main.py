@@ -125,7 +125,7 @@ class PhysicalModel:
         self.arrow_size = [3, 10, 12, 5]
         self.arrow_size_r = [3, 10, 12, 5]
 
-        self.arrow_radius = 150
+        self.arrow_radius = 120
 
         self.v_scale = self.arrow_radius / \
             m.sqrt(b_dot[0]*b_dot[0] + b_dot[1]*b_dot[1])
