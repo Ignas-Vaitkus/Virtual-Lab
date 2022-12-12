@@ -119,7 +119,7 @@ class PhysicalModel:
         self.joint_b = self.create_joint(self.B)
 
         self.arrow_size = [3, 10, 12, 5]
-        self.arrow_size_r = [20, 24, 30, 10]
+        self.arrow_size_r = [3, 10, 12, 5]
 
         self.arrow_radius = 150
 
